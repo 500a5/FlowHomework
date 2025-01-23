@@ -26,14 +26,21 @@ class MainActivity : AppCompatActivity() {
                 catsViewModel.catsStateFlow.collect { state ->
                     when (state) {
                         is Result.Success -> {
+                            view.hideProgressBar()
                             view.populate(state.data)
                         }
+
                         is Result.Error -> {
+                            view.hideProgressBar()
                             Toast.makeText(
-                                application.baseContext,
+                                this@MainActivity,
                                 "Error: ${state.message}",
                                 Toast.LENGTH_SHORT
                             ).show()
+                        }
+
+                        Result.Loading -> {
+                            view.showProgressBar()
                         }
                     }
                 }
